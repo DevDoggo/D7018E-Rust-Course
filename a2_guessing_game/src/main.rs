@@ -3,6 +3,9 @@ extern crate colored;
 
 use std::io;    //standard in-out
 use std::cmp::Ordering;
+use std::cmp::max;
+use std::collections::HashMap;
+
 use rand::Rng;
 use std::io::Write; //seemingly needed to use io::stdout().flush()
 use colored::*;
@@ -23,9 +26,46 @@ fn get_input() -> Result<u32, String> {
 }
 
 fn print_guesses(v: &Vec<(u32, String)>) {
-    println!("Results:\nAttempt | Guess");
-    for g in v {
+    let iterations = 2;
+    for i in 0..iterations { 
+        println!("\nResults: Printing All\nAttempt | Guess");
+        for g in v {
+            println!("      {} | {}", g.0, g.1);
+        }
+    }
+}
+
+fn print_the_last_three_guesses_in_backwards_order_really_nicely(v: &Vec<(u32, String)>) {
+    let mut count = 0;     
+    println!("\nResults: Printing Last Three\nAttempt | Guess");
+    for g in v.iter().rev() {
         println!("      {} | {}", g.0, g.1);
+        count += 1;
+        if count == 3 { break; }
+    }
+}
+
+fn print_hashmap(hm: &HashMap<u32, String>) {
+    println!("\nResults: Printing HashMap\nAttempt | Guess");
+    for m in hm{
+        println!("      {:?} | {:?}", m.0, m.1);
+    }
+}
+
+fn print_hashmap_last_three(hm: &HashMap<u32, String>) {
+    println!("\nResults: Printing Last Three in Hashmap\nAttempt | Guess");  
+    let mut entries = 0;
+    for m in hm.iter() {
+        entries += 1;
+    }
+    //let ln: u32 = hm.len(); //Give error because hm.len() is usize, not u32
+     
+    for i in (max(entries-2, 1)..entries+1).rev() { 
+        let mut item = hm.get(&i);
+        match item {
+            Some(num) => println!("      {} | {}", i, num),
+            None => println!("Nothing!"),
+        };
     }
 }
 
@@ -40,6 +80,10 @@ fn main() {
     //Vector to hold all guesses, first to last.
     let mut guesses: Vec<(u32, String)>= Vec::new();
     let mut guess_pair: (u32, String);
+    
+    //Hashmap
+    let mut guess_hashmap = HashMap::new();
+
     let mut guess: u32;
     let mut attempts = 0;
 
@@ -56,8 +100,13 @@ fn main() {
         };
          
         attempts += 1;
+        
+        //Vector
         guess_pair = (attempts, guess.to_string());
         guesses.push(guess_pair);
+
+        //Hashmap
+        guess_hashmap.insert(attempts, guess.to_string());
         
         println!("\nYou guessed: {}!", guess);
         print!("That's ");
@@ -78,7 +127,10 @@ fn main() {
         }
         println!("\nYou've guessed {} time(s) already!", attempts.to_string().yellow())
     }
-    //println!("{:?}", guesses);
+
     print_guesses(&guesses);
+    print_the_last_three_guesses_in_backwards_order_really_nicely(&guesses); 
+    print_hashmap(&guess_hashmap);
+    print_hashmap_last_three(&guess_hashmap);
 }
 
