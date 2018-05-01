@@ -1,5 +1,6 @@
 extern crate rand;
 extern crate colored;
+extern crate guessing_game;
 
 use std::io;    //standard in-out
 use std::cmp::Ordering;
@@ -9,6 +10,7 @@ use std::collections::HashMap;
 use rand::Rng;
 use std::io::Write; //seemingly needed to use io::stdout().flush()
 use colored::*;
+
 
 fn get_input() -> Result<u32, String> {
     //returns io::Result, this has .expect() method
@@ -26,49 +28,6 @@ fn get_input() -> Result<u32, String> {
     }
 }
 
-fn print_guesses(v: &Vec<(u32, String)>) {
-    let iterations = 2;
-    for _i in 0..iterations { 
-        println!("\nResults: Printing All\nAttempt | Guess");
-        for g in v {
-            println!("      {} | {}", g.0, g.1);
-        }
-    }
-}
-
-fn print_the_last_three_guesses_in_backwards_order_really_nicely(v: &Vec<(u32, String)>) {
-    let mut count = 0;     
-    println!("\nResults: Printing Last Three\nAttempt | Guess");
-    for g in v.iter().rev() {
-        println!("      {} | {}", g.0, g.1);
-        count += 1;
-        if count == 3 { break; }
-    }
-}
-
-fn print_hashmap(hm: &HashMap<u32, String>) {
-    println!("\nResults: Printing HashMap\nAttempt | Guess");
-    for m in hm{
-        println!("      {:?} | {:?}", m.0, m.1);
-    }
-}
-
-fn print_hashmap_last_three(hm: &HashMap<u32, String>) {
-    println!("\nResults: Printing Last Three in Hashmap\nAttempt | Guess");  
-    let mut entries = 0;
-    for _m in hm.iter() {
-        entries += 1;
-    }
-    //let ln: u32 = hm.len(); //Give error because hm.len() is usize, not u32
-     
-    for i in (max(entries-2, 1)..entries+1).rev() { 
-        let mut item = hm.get(&i);
-        match item {
-            Some(num) => println!("      {} | {}", i, num),
-            None => println!("Nothing!"),
-        };
-    }
-}
 
 fn main() {
     println!("{}", "\n\nGuess the number or perish. :)".bold());
@@ -129,9 +88,14 @@ fn main() {
         println!("\nYou've guessed {} time(s) already!", attempts.to_string().yellow())
     }
 
-    print_guesses(&guesses);
-    print_the_last_three_guesses_in_backwards_order_really_nicely(&guesses); 
-    print_hashmap(&guess_hashmap);
-    print_hashmap_last_three(&guess_hashmap);
+    //print_guesses(&guesses);
+    //print_the_last_three_guesses_in_backwards_order_really_nicely(&guesses); 
+    //print_hashmap(&guess_hashmap);
+    //print_hashmap_last_three(&guess_hashmap);
+    guessing_game::results::print_guesses(&guesses);
+    guessing_game::results::print_the_last_three_guesses_in_backwards_order_really_nicely(&guesses); 
+    guessing_game::results::print_hashmap(&guess_hashmap);
+    guessing_game::results::print_hashmap_last_three(&guess_hashmap);
 }
+
 
