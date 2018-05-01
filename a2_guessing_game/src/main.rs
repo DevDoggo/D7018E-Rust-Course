@@ -16,6 +16,7 @@ fn get_input() -> Result<u32, String> {
     print!("\nYour guess is...: ");
     io::stdout().flush().unwrap(); //Throws away the result, and grabs the OK if it exists.
     io::stdin().read_line(&mut guess); 
+        //Do I use something here or does that mess up the match below?
 
     //parse makes the string into the number type (in this case u32)
     //parse() can crash too with strange input. So .expect is here too!
@@ -27,7 +28,7 @@ fn get_input() -> Result<u32, String> {
 
 fn print_guesses(v: &Vec<(u32, String)>) {
     let iterations = 2;
-    for i in 0..iterations { 
+    for _i in 0..iterations { 
         println!("\nResults: Printing All\nAttempt | Guess");
         for g in v {
             println!("      {} | {}", g.0, g.1);
@@ -55,7 +56,7 @@ fn print_hashmap(hm: &HashMap<u32, String>) {
 fn print_hashmap_last_three(hm: &HashMap<u32, String>) {
     println!("\nResults: Printing Last Three in Hashmap\nAttempt | Guess");  
     let mut entries = 0;
-    for m in hm.iter() {
+    for _m in hm.iter() {
         entries += 1;
     }
     //let ln: u32 = hm.len(); //Give error because hm.len() is usize, not u32

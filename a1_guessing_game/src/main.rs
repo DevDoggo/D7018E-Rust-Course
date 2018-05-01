@@ -20,7 +20,7 @@ fn main() {
     loop{
         let mut guess = String::new();
         print!("\nYour guess is...: ");
-        io::stdout().flush();
+        io::stdout().flush().unwrap(); //Throws away the result, and grabs the OK if it exists.
 
         //returns io::Result, this has .expect() method
         io::stdin().read_line(&mut guess)  
