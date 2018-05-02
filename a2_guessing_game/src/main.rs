@@ -4,11 +4,10 @@ extern crate guessing_game;
 
 use std::io;    //standard in-out
 use std::cmp::Ordering;
-use std::cmp::max;
 use std::collections::HashMap;
+use std::io::Write; //seemingly needed to use io::stdout().flush()
 
 use rand::Rng;
-use std::io::Write; //seemingly needed to use io::stdout().flush()
 use colored::*;
 
 
@@ -28,7 +27,6 @@ fn get_input() -> Result<u32, String> {
     }
 }
 
-
 fn main() {
     println!("{}", "\n\nGuess the number or perish. :)".bold());
 
@@ -37,22 +35,15 @@ fn main() {
 
     println!("The secret number is: {}, but don't tell a soul.", secret_number);
   
-    //Vector to hold all guesses, first to last.
-    let mut guesses: Vec<(u32, String)>= Vec::new();
-    let mut guess_pair: (u32, String);
-    
-    //Hashmap
-    let mut guess_hashmap = HashMap::new();
-
-    let mut guess: u32;
-    let mut attempts = 0;
+    let mut guesses: Vec<(u32, String)>= Vec::new();    //Vector to hold all guesses, first to last.
+    let mut guess_pair: (u32, String);                  //Tuple 
+    let mut guess_hashmap = HashMap::new();             //Hashmap
+    let mut guess: u32;                                 //Guess
+    let mut attempts = 0;                               //Attempts
 
     loop{
         match get_input() {
-            Ok(num) => {
-                println!("Number {}!", num);
-                guess = num;
-            }
+            Ok(num) => guess = num,
             Err(error) => {
                 println!("Error {}!", error);
                 continue;
@@ -61,12 +52,10 @@ fn main() {
          
         attempts += 1;
         
-        //Vector
-        guess_pair = (attempts, guess.to_string());
+        guess_pair = (attempts, guess.to_string());         //Vector
         guesses.push(guess_pair);
 
-        //Hashmap
-        guess_hashmap.insert(attempts, guess.to_string());
+        guess_hashmap.insert(attempts, guess.to_string());  //Hashmap
         
         println!("\nYou guessed: {}!", guess);
         print!("That's ");
